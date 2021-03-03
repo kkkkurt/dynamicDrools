@@ -1,8 +1,22 @@
 # dynamicDrools
-动态配置drools规则引擎和定时器,本文只提供了一个解决思路，后续会从项目中把代码摘取出来
+动态配置drools规则引擎和定时器
+
+动态规则数据表配置见附件drools.sql
+   说明：本人使用了四张表 rule,trigger,filter,action,对应关系如下 rule 一对多 trigger,action;trigger 一对多filter，您可以参考业务情况，进行修改，或者您直接存储在一张表中，使用json格式存储这些数据。后续在拼接drools语法的时候，直接解析json即可。
 ##动态规则
   思路如下：
       MQ数据-》从数据库中获取rule->执行规则->满足条件->执行操作
+      1.consumer接收到MQ传递过来的数据，此处我使用的是json数据，如下:
+      {"deviceId":XXXXXXXx,
+       "status:"onloine"
+      }
+      根据传递过来的json数据的deviceId字段，去数据库中查询，有没有对应deviceId的规则，如果有，并且规则规则的状态为已启动。则加载这条规则，然后执行规则
+      
+      规则模板如下：
+        
+      
+      
+      
 ##定时器
   思路如下：
       由于drools自带的定时器太过于鸡肋，无法控制定时器的开启，关闭，在执行过程中无法修改when 条件数据。
